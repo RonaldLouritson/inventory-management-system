@@ -1,0 +1,67 @@
+{% extends 'inventory/base.html' %}
+{% load static thumbnail %}
+
+{% block title %}Item Details{% endblock %}
+
+{% block content %}
+
+<div>
+    <h1>Render from View Function</h1>
+        {% comment %} {% thumbnail path "80x80" crop="center" as im %}
+            <img alt="" src="{% static url %}image/kiratech_logo.png" >
+        {% endthumbnail %} {% endcomment %}
+    <br/>
+    <img src="{% static url %}image/kiratech_logo.png" width="350" height="350">
+    <br/>
+    <div class="tableFixHead">
+        <table id="myTable2" class="w-full" >
+            <thead>                                           
+                <tr
+                    class="text-md font-semibold tracking-wide text-center text-gray-900 bg-blue-400 uppercase border-b border-gray-600">
+                    <th width="10%" onclick="sortTable({{ forloop.counter0 }})" class="px-4 py-3">No</th>
+
+                    {% for fieldsN in fieldS %}
+
+                            {% if fieldsN.name == 'name' %}
+                            <th width="10%" onclick="sortTable({{ forloop.counter0 }})" class="px-4 py-3" >NAME</th>
+                            {% elif fieldsN.name == 'description' %}
+                            <th width="20%" onclick="sortTable({{ forloop.counter0 }})" class="px-4 py-3">DESCRIPTION</th>
+                            {% elif fieldsN.name == 'note' %}
+                            <th width="30%" onclick="sortTable({{ forloop.counter0 }})" class="px-4 py-3">NOTE</th>
+                            {% elif fieldsN.name == 'stock' %}
+                            <th width="10%" onclick="sortTable({{ forloop.counter0 }})" class="px-4 py-3">STOCK</th>
+                            {% elif fieldsN.name == 'availability' %}
+                            <th width="10%" onclick="sortTable({{ forloop.counter0 }})" class="px-4 py-3">AVAILABILITY</th>
+                            {% elif fieldsN.name == 'supplier' %}
+                            <th width="10%" onclick="sortTable({{ forloop.counter0 }})" class="px-4 py-3">SUPPLIER</th>
+                            {% endif %}
+
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody class="bg-white" id="table-list2">
+                {% for record in recordS %}
+                <tr class="text-gray-700">
+                    <td class="px-4 py-3 border text-sm">{{ record.id }}</td>
+                    <td class="px-4 py-3 border text-sm">{{ record.name }}</td>                                    
+                    <td class="px-4 py-3 border text-sm">{{ record.description }}</td> 
+                    <td class="px-4 py-3 border text-sm">{{ record.note }}</td> 
+                    <td class="px-4 py-3 border text-sm">{{ record.stock }}</td> 
+                    <td class="px-4 py-3 border text-sm">{{ record.availability }}</td>
+                    <td class="px-4 py-3 border text-sm">{{ record.supplier }}</td> 
+                </tr>
+                {% empty %}
+                    <tr><td style="text-align: center; vertical-align: middle;" class="px-4 py-3 border text-sm center" colspan="7">No Data Available</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="pr-3 mt-7">
+    <button id="btnBack" type="submit" onclick="history.back(); return false;"
+        class="px-3 py-2 bg-slate-900 text-white rounded-md shadow-sm">
+        Go Back
+    </button>
+</div>
+
+{% endblock %}

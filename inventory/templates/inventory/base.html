@@ -1,0 +1,198 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>KIRATECH - {% block title %}{% endblock %}</title>
+    <link href={% static "css/style.css" %} rel="stylesheet">
+</head>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<style>
+    * {
+        box-sizing: border-box;
+      }
+      
+      body {
+        font-family: Arial, Helvetica, sans-serif;
+      }
+      
+      /* Float four columns side by side */
+      .column {
+        float: left;
+        width: 20%;
+        padding: 0 10px;
+      }
+      
+      /* Remove extra left and right margins, due to padding */
+      .row {margin: 0 -5px;}
+      
+      /* Clear floats after the columns */
+      .row:after {
+        content: "";
+        display: table;
+        clear: both;
+      }
+      
+      /* Responsive columns */
+      @media screen and (max-width: 600px) {
+        .column {
+          width: 100%;
+          display: block;
+          margin-bottom: 20px;
+        }
+      }
+      
+      /* Style the counter cards */
+      .card {
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+        padding: 16px;
+        text-align: center;
+        background-color: #f1f1f1;
+      }
+
+      .Row {
+        display: table;
+        width: 100%; /*Optional*/
+        table-layout: fixed; /*Optional*/
+        border-spacing: 1px; /*Optional*/
+    }
+    .Column {
+        display: table-cell;
+        color:white;
+        text-align: center;
+        /*background-color: red;*/
+    }
+</style>
+<script>
+    
+    setInterval(function() {
+        var local = new Date();
+        var hours = local.getHours();
+        var minutes = local.getMinutes();
+        var ampm = hours >= 12 ? 'pm' : 'am';
+        hours = hours % 12;
+        hours = hours ? hours : 12; // the hour '0' should be '12'
+        minutes = minutes < 10 ? '0'+minutes : minutes;
+        ///var strTime = hours + ':' + minutes + ' ' + ampm;
+        //return strTime;
+        //var localdatetime = local.getHours() + ":" + pad(local.getMinutes()) + ":" + pad(local.getSeconds());
+        var localdatetime = hours + ":" + pad(minutes) + ":" + pad(local.getSeconds()) + " " + ampm;
+      
+        //var remote = new Date();
+        //remote.setHours(local.getHours() - 5);
+        //var remotedatetime = remote.getHours() + ":" + pad(remote.getMinutes()) + ":" + pad(remote.getSeconds());
+      
+        $('#local-time').html(localdatetime);
+        //$('#remote-time').html(remotedatetime);
+      }, 1000);
+      
+      function pad(t) {
+        var st = "" + t;
+        
+        while (st.length < 2)
+          st = "0" + st;
+          
+        return st;  
+      }
+</script>
+<body>
+
+    <div class="relative min-h-screen md:flex">
+
+        <!-- mobile menu bar -->
+        <div class="bg-slate-900 text-gray-100 flex justify-between md:hidden">
+            <!-- logo -->
+
+            <a href="#" class="block p-4 text-white font-bold">KIRATECH</a>          
+
+            <!-- mobile menu button -->
+            <button class="mobile-menu-button p-4 focus:outline-none focus:bg-gray-700">
+                <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
+            </button>
+        </div>
+
+        <div id="sideMenu" 
+            class="absolute lg:block sidebar bg-slate-900 text-blue-100 w-64 space-y-6 py-6 px-2 inset-y-0 left-0 transform -translate-x-full md:relative md:translate-x-0 transition duration-200 ease-in-out">
+
+            <!-- logo -->
+
+            <a href="#" class="text-white flex items-center space-x-2 px-4">
+                <span class="text-xl font-extrabold"><img src="{% static url %}image/kiratech_svglogo.svg" alt="kiratech_logo"
+                        class="mx-auto h-12 w-auto" /></span>
+            </a>
+
+            <!-- nav -->
+            <nav>
+                <a href="{% url 'mainPage' %}"
+                    class="block py-2.5 px-4 rounded transition duration-200 hover:bg-white hover:text-slate-900">
+                    Home
+                </a>
+                <a href="{% url 'logout' %}"
+                    class="block py-2.5 px-4 rounded transition duration-200 hover:bg-white hover:text-slate-900">
+                    Logout
+                </a>
+            </nav>
+        </div>
+
+
+        <div class="flex-row w-full">
+            <div class="h-6">
+                <div class="flex justify-between bg-slate-900">
+                <div class="hidden md:block p-3 bg-slate-900 text-white">
+                    <button class="mobile-menu-button p-4 focus:outline-none focus:bg-gray-700"  onclick="sidemenuClick()">
+                        <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                    </button>
+                </div>
+                <div class="Row">
+                    <div class="Column">{% now "d/m/Y" %}</div>
+                    <div id="local-time" class="Column"></div>
+                    <div class="Column username hidden md:block p-6 bg-slate-900 text-white">User ID : <b>{{ user }}</b></div>
+                </div>
+            </div>
+            <div class="m-8">
+
+                {% block content %}
+
+                {% endblock %}
+
+            </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // grab everything we need
+        const btn = document.querySelector(".mobile-menu-button");
+        const sidebar = document.querySelector(".sidebar");
+
+        // add our event listener for the click
+        btn.addEventListener("click", () => {
+            sidebar.classList.toggle("-translate-x-full");
+        });
+    </script>
+    <script>
+        function sidemenuClick() {
+          var menu = document.getElementById('sideMenu');
+          if (menu.classList.contains('hidden')) {
+            menu.classList.remove('hidden');
+          } else {
+            menu.classList.add('hidden');
+          }
+        }
+      </script>
+    {% load sweetify %}
+    {% sweetify %}
+</body>
+
+</html>
