@@ -1,0 +1,128 @@
+{% extends 'inventory/base.html' %}
+{% load static %}
+
+{% block title %}Inventory{% endblock %}
+
+{% block content %}
+<div class="container">
+<br>
+<div class="input-group">
+    <input id="name" type="text" class="form-control" placeholder="Search by name">
+    <button class="btn btn-outline-secondary" onclick="searchByName()" type="button">Search</button>
+</div>
+<br>
+<table id="table1" class="table table-bordered">
+    <thead>
+    <tr>
+        <th>No</th>
+        <th>Name</th>
+        <th>Availability</th>
+        <th>Supplier</th>
+    </tr>
+    </thead>
+    <tbody id="table-list">
+    </tbody>
+</table>
+</div>
+
+<script>
+    var input = document.getElementById('name');
+	input.addEventListener('keypress', function(e){
+		if (e.key === 'Enter'){
+			if ($('#name').val() != '') {
+                tblData($('#name').val());
+            } else {
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: 'top-end',
+                    position: 'center',
+                    showConfirmButton: false,
+                    timer: 2000,
+                    //timerProgressBar: true,
+                    onOpen: (toast) => {
+                        toast.addEventListener('mouseenter', Swal.stopTimer)
+                        toast.addEventListener('mouseleave', Swal.resumeTimer)
+                    }
+                })
+                Toast.fire({
+                    icon: 'error',
+                    title: 'Search name field is empty!'
+                })
+            }
+		}
+	})
+</script>
+
+<script>
+    function searchByName(){
+        if ($('#name').val() != '') {
+            tblData($('#name').val());
+        } else {
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                position: 'center',
+                showConfirmButton: false,
+                timer: 2000,
+                //timerProgressBar: true,
+                onOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                }
+            })
+            Toast.fire({
+                icon: 'error',
+                title: 'Search name field is empty!'
+            })
+        }
+    }
+</script>
+
+<script>
+    $(document).ready(function() {
+        //Fetch data
+        tblData('');        
+    });
+</script>
+
+<script>
+    //Function to call API Endpoint and Populate All Data
+    function tblData(name){
+
+        $("#table1 tbody").empty();
+
+        $.ajax({
+            type: "GET",
+            url: 'api/inventory',
+            data: {
+            name: name,
+            },
+
+            success: function (data) {     
+                if(data != '' && data != null) {
+                                    
+                    var html = '';
+                    $('#table-list').append(html);
+                    for (i in data) {
+                        
+                        if (data[i].availability == true) { availability = "Yes" } else { availability = "No" } 
+
+                        html = '<tr>' +
+                            '<td>' + (parseInt(i)+1) + '</td>' +
+                            '<td><a href="/inventory/'+data[i].id+'">'+data[i].name+'</a></td>' +
+                            '<td>' + availability + '</td>' +
+                            '<td>' + data[i].supplier + '</td>' +
+                            '</tr>';
+                        $('#table-list').append(html);
+
+                    }
+                }
+            },
+            error: function (error_response) {
+                console.log(error_response)
+            },
+        });
+
+    }
+</script>
+{% endblock content %}

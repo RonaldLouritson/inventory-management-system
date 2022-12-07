@@ -1,0 +1,52 @@
+{% extends 'inventory/base.html' %}
+{% load static %}
+
+{% block title %}Inventory Details{% endblock %}
+
+{% block content %}
+<div class="container">
+    {% if inventory %}
+    <img src="{% static url %}image/logo.png" width="200" height="200">
+    <table class="table table-striped mt-5">
+        <thead class="table-dark">
+            <tr>
+                <th>Title</th>
+                <th>Value</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>ID</td>
+                <td>{{inventory.id}}</td>
+            </tr>
+            <tr>
+                <td>Name</td>
+                <td>{{inventory.name}}</td>
+            </tr>
+            <tr>
+                <td>Description</td>
+                <td>{{inventory.description}}</td>
+            </tr>
+            <tr>
+                <td>Note</td>
+                <td>{{inventory.note}}</td>
+            </tr>
+            <tr>
+                <td>Stock</td>
+                <td>{{inventory.stock}}</td>
+            </tr>
+            <tr>
+                <td>Availability</td>
+                <td>{% if inventory.availability %} Yes {% else %} No {% endif %}</td>
+            </tr>
+            <tr>
+                <td>Supplier</td>
+                <td>{{inventory.supplier.name}}</td>
+            </tr>
+        </tbody>
+    </table>
+    {% else %}
+    <p>No Item Details Found</p>
+    {% endif %}
+</div>
+{% endblock content %}
