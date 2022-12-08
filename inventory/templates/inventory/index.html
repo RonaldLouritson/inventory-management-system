@@ -116,6 +116,23 @@
                         $('#table-list').append(html);
 
                     }
+                } else {
+                    const Toast = Swal.mixin({
+                        toast: true,
+                        position: 'top-end',
+                        position: 'center',
+                        showConfirmButton: false,
+                        timer: 2000,
+                        //timerProgressBar: true,
+                        onOpen: (toast) => {
+                            toast.addEventListener('mouseenter', Swal.stopTimer)
+                            toast.addEventListener('mouseleave', Swal.resumeTimer)
+                        }
+                    })
+                    Toast.fire({
+                        icon: 'info',
+                        title: 'No record found!'
+                    })
                 }
             },
             error: function (error_response) {
