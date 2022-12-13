@@ -1,0 +1,2 @@
+docker build --tag inventory-management-system .
+docker run --publish 8000:8000 inventory-management-system
