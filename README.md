@@ -7,3 +7,5 @@ inventory management system
 - python manage.py makemigrations
 - python manage.py migrate
 - python manage.py runserver
+
+pythonanywhere link : https://invmngsys.pythonanywhere.com/inventory
